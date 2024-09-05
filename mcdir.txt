@@ -1,0 +1,115 @@
+# ================================================= [ MC + MCDIR COMMANDS ] =================================================
+#					           v1 (c) 57Digital Ltd, 2024.
+# ===========================================================================================================================
+# Installation Instructions:
+# 1. Open PowerShell and run: notepad $PROFILE
+#    This will open the PowerShell profile in Notepad. If the file doesn't exist, it will prompt you to create it.
+# 2. Copy and paste this entire script into the profile file in Notepad.
+# 3. Save the file and close Notepad.
+# 4. Completely close PowerShell and reopen it. The functions will now be available for use in PowerShell.
+#
+# You can now use the following commands:
+# - `mc` : Opens Minecraft.
+# - `mc --kill` : Force close Minecraft.
+# - `mc --help` : Show available commands for `mc`.
+# - `mcdir` : Opens the Minecraft directory in File Explorer.
+# - `mcdir --path` : Outputs the Minecraft directory path.
+# - `mcdir --preview-path` : Outputs the Minecraft Preview directory path.
+# - `mcdir --help` : Show available commands for `mcdir`.
+# - `mcdir-uwp --path` : Output the InstallLocation path for Minecraft UWP.
+# - `mcdir-uwp` : Opens the InstallLocation path in File Explorer.
+
+# mc function with --kill, --help options, and opening Minecraft
+function mc {
+    param (
+        [string]$option
+    )
+
+    switch ($option) {
+        "--kill" {
+            # Kill the Minecraft process
+            taskkill /IM "Minecraft.Windows.exe" /F
+        }
+        "--help" {
+            # Display available commands for mc and mention mcdir
+            Write-Host "Available mc commands:"
+            Write-Host "`t(no option) : Open Minecraft"
+            Write-Host "`t--kill : Force close Minecraft"
+            Write-Host "`t--help : Display this help message"
+            Write-Host "`nNote: You can use `mcdir` for directory-related commands. Type `mcdir --help` for more information."
+        }
+        default {
+            # Open Minecraft
+            Start-Process "minecraft://"
+        }
+    }
+}
+
+# mcdir function with --path, --help, and opening Explorer options
+function mcdir {
+    param (
+        [string]$option
+    )
+
+    switch ($option) {
+        "--path" {
+            # Output the regular Minecraft folder path
+            return mcdir-com
+        }
+        "--preview-path" {
+            # Output the Minecraft Preview folder path
+            return mcdir-com-preview
+        }
+        "--help" {
+            # Display available commands for mcdir
+            Write-Host "Available mcdir commands:"
+            Write-Host "`t--path : Show the regular Minecraft directory path"
+            Write-Host "`t--preview-path : Show the Minecraft Preview directory path"
+            Write-Host "`t--help : Display this help message"
+            Write-Host "`t(no option) : Open the regular Minecraft directory in Explorer"
+        }
+        default {
+            # If no option is provided, open the regular Minecraft folder in Explorer
+            $path = mcdir-com
+            Start-Process explorer.exe $path
+        }
+    }
+}
+
+# mcdir-uwp function to get InstallLocation of Minecraft UWP
+function mcdir-uwp {
+    param (
+        [string]$option
+    )
+
+    # Get the InstallLocation of Minecraft UWP
+    $package = Get-AppxPackage Microsoft.MinecraftUWP
+    $installLocation = $package.InstallLocation
+
+    switch ($option) {
+        "--path" {
+            # Output the InstallLocation path
+            return $installLocation
+        }
+        default {
+            # Open the InstallLocation in File Explorer
+            Start-Process explorer.exe $installLocation
+        }
+    }
+}
+
+# Function to get regular Minecraft directory path
+function mcdir-com {
+    $path = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.MinecraftUWP_8wekyb3d8bbwe\LocalState\games\com.mojang"
+    return $path
+}
+
+# Function to get Minecraft Preview directory path
+function mcdir-com-preview {
+    $path = Join-Path $env:LOCALAPPDATA "Packages\Microsoft.MinecraftWindowsBeta_8wekyb3d8bbwe\LocalState\games\com.mojang"
+    return $path
+}
+
+# ================================================ [ /MC + MCDIR COMMANDS ] =================================================
+#					           v1 (c) 57Digital Ltd, 2024.
+# ===========================================================================================================================
