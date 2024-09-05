@@ -1,5 +1,5 @@
 # ================================================= [ MC + MCDIR COMMANDS ] =================================================
-#					           v1 (c) 57Digital Ltd, 2024.
+# v1 (c) 57Digital Ltd, 2024. https://github.com/jamiechapman/mcdir/tree/master
 # ===========================================================================================================================
 # Installation Instructions:
 # 1. Open PowerShell and run: notepad $PROFILE
@@ -111,5 +111,5 @@ function mcdir-com-preview {
 }
 
 # ================================================ [ /MC + MCDIR COMMANDS ] =================================================
-#					           v1 (c) 57Digital Ltd, 2024.
+# v1 (c) 57Digital Ltd, 2024. https://github.com/jamiechapman/mcdir/tree/master
 # ===========================================================================================================================
